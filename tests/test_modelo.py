@@ -7,7 +7,7 @@ from tratativas.modelo import Pacote
     "corrigida, esperado",
     [
         ("libdemo1-1.0-2ubuntu0.1+esm1", True),
-        ("libdemo1-1.0-2ubuntu0.24.04.1~esm3", True),
+        ("libdemo1-1.0-2ubuntu0.24.1~esm3", True),
         ("libesmtp6-1.1.0-3", False),
         ("node-esm-3.2.25-1", False),
         ("", False),
