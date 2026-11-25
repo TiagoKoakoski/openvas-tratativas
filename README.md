@@ -53,7 +53,7 @@ uv run tratativas relatorios/ --inteligencia inteligencia --baixar --config conf
 | `--inteligencia` | pasta com `kev.json` e `epss.csv.gz` |
 | `--baixar` | atualiza os dois catálogos antes de gerar |
 | `--avisos` | pasta `notus/advisories` do feed, para o formato OSP |
-| `--config` | prazos, fuso e nome dos hosts ([modelo](exemplo/config.toml)) |
+| `--config` | prazos, fuso e nome dos hosts ([modelo](exemplo/config.toml)); sem ele, as datas saem em UTC |
 | `--hoje` | data usada para calcular atraso |
 
 Formatos aceitos:
