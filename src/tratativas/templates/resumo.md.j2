@@ -1,0 +1,41 @@
+# {{ titulo|md }}
+
+Gerado em {{ gerado|data }}.
+
+- **{{ resumo.abertos|plural("aberto", "abertos") }}** em {{ resumo.acoes|plural("ação", "ações") }}; {{ resumo.a_confirmar }} a confirmar
+- **Atrasados: {{ resumo.atrasados }}**
+- Já explorados em ataques reais (CISA KEV): {{ resumo.kev }}
+- Nesta rodada: {{ resumo.novos|plural("novo", "novos") }}, {{ resumo.reabertos|plural("reaberto", "reabertos") }}, {{ resumo.nao_verificados|plural("não verificado", "não verificados") }}
+- Correções confirmadas: {{ resumo.corrigidos }}
+{%- if resumo.dias_para_corrigir is not none %} (mediana de {{ resumo.dias_para_corrigir|plural("dia", "dias") }}; {{ resumo.no_prazo }}% no prazo){% endif %}
+
+
+| Nível | Prazo | Abertos |
+|---|---|---|
+{% for n in niveis %}
+| {{ n }} | {{ prazos[n]|plural("dia", "dias") if n in prazos else "sem prazo" }} | {{ resumo.por_nivel[n] }} |
+{% endfor %}
+
+## Próximas ações
+
+{% for a in acoes[:10] %}
+1. **{{ a.titulo|md }}** ({{ a.nivel }}, {{ "até " if a.vence }}{{ a.vence|data }}{{ ", ATRASADA" if a.atrasada }}): {{ a.hosts|join(", ")|md }}.{{ " Exploração confirmada." if a.kev }}{{ " Exige Ubuntu Pro (ESM)." if a.hosts_esm }}
+{% else %}
+Nenhuma ação aberta.
+{% endfor %}
+{% if acoes|length > 10 %}
+
+Mais {{ acoes|length - 10 }} no painel.
+{% endif %}
+{% set com_alerta = hosts|selectattr("alertas")|list %}
+{% if com_alerta or avisos %}
+
+## Atenção
+
+{% for h in com_alerta %}
+- {{ h.nome|md }}: {{ h.alertas|join(", ") }}
+{% endfor %}
+{% for a in avisos %}
+- {{ a|md }}
+{% endfor %}
+{% endif %}

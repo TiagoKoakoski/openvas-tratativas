@@ -1,0 +1,141 @@
+{% set nomes_nivel = {"P1": "P1, corrigir agora", "P2": "P2, urgente", "P3": "P3, planejado", "P4": "P4, rotina", "Confirmar": "A confirmar"} %}
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'sha256-{{ hash_css }}'; script-src 'sha256-{{ hash_js }}'; base-uri 'none'; form-action 'none'">
+<title>{{ titulo }}</title>
+<style>{{ css|safe }}</style>
+</head>
+<body>
+<header>
+  <h1>{{ titulo }}</h1>
+  <p class="manchete">
+    {%- if not resumo.abertos %}Nenhum achado aberto no plano.
+    {%- else %}{{ resumo.abertos|plural("achado aberto", "achados abertos") }},
+    {{ resumo.atrasados or "nenhum" }} fora do prazo.{% endif -%}
+  </p>
+  <p>
+    {{ resumo.acoes|plural("ação resolve", "ações resolvem") }} o que está aberto.
+    {% if resumo.kev %}{{ resumo.kev|plural("achado já é explorado", "achados já são explorados") }} em ataques reais (CISA KEV).{% endif %}
+    {% if resumo.novos %}{{ resumo.novos|plural("é novo", "são novos") }} nesta rodada.{% endif %}
+    {% if resumo.reabertos %}{{ resumo.reabertos|plural("voltou", "voltaram") }} depois de corrigido{{ "s" if resumo.reabertos > 1 }}.{% endif %}
+    {% if resumo.nao_verificados %}{{ resumo.nao_verificados|plural("não pôde ser verificado", "não puderam ser verificados") }}.{% endif %}
+  </p>
+  {% if resumo.dias_para_corrigir is not none %}
+  <p>{{ resumo.corrigidos|plural("correção confirmada", "correções confirmadas") }}. Metade levou até {{ resumo.dias_para_corrigir|plural("dia", "dias") }}; {{ resumo.no_prazo }}% ficaram no prazo.</p>
+  {% endif %}
+  <p class="apoio">Gerado em {{ gerado|data }}.
+    {% if fontes.kev %}CISA KEV {{ fontes.kev }}.{% endif %}
+    {% if fontes.epss %}EPSS de {{ fontes.epss|data }}.{% endif %}</p>
+  {% for a in avisos %}<p class="aviso">{{ a }}.</p>{% endfor %}
+</header>
+<main>
+<section>
+  <h2>Onde estão</h2>
+  <p class="apoio">Cada quadrado é um achado em um host.</p>
+  <ul class="legenda">
+    {% for n in niveis %}<li><span class="q {{ n }}"></span>{{ nomes_nivel[n] }}</li>{% endfor %}
+    <li><span class="q corrigido"></span>Corrigido</li>
+  </ul>
+  <div class="mapa">
+  {% for h in hosts %}
+    <div class="host">
+      <div>
+        <strong>{{ h.nome }}</strong>
+        <small>{{ h.abertos|plural("aberto", "abertos") }}, {{ h.corrigidos|plural("corrigido", "corrigidos") }}<br>
+        Última varredura: {{ h.ultima|data }}</small><br>
+        {% for a in h.alertas %}<span class="rotulo">{{ a }}</span>{% endfor %}
+      </div>
+      <div class="campo" role="img" aria-label="{% for n in niveis %}{{ nomes_nivel[n] }}: {{ h.por_nivel[n] }}. {% endfor %}Corrigidos: {{ h.corrigidos }}.">
+        {% for n in niveis %}{% for _ in range(h.por_nivel[n]) %}<span class="q {{ n }}" title="{{ nomes_nivel[n] }}: {{ h.por_nivel[n] }}"></span>{% endfor %}{% endfor %}
+        {% for _ in range(h.corrigidos) %}<span class="q corrigido" title="Corrigidos: {{ h.corrigidos }}"></span>{% endfor %}
+      </div>
+    </div>
+  {% endfor %}
+  </div>
+</section>
+
+<section>
+  <h2>Plano de ação</h2>
+  {% if not acoes %}
+  <p>Nenhuma ação aberta. A próxima rodada confirma se continua assim.</p>
+  {% else %}
+  <p class="apoio">Prazos: {% for n, d in prazos.items() %}{{ n }} em {{ d|plural("dia", "dias") }}{{ ", " if not loop.last }}{% endfor %}. Detecção com confiança abaixo de {{ qod_minimo }}% fica em "A confirmar", sem prazo, salvo se já for explorada.</p>
+  <div class="filtros">
+    <label>Buscar <input id="busca" type="search" placeholder="pacote, CVE, host"></label>
+    <label>Nível <select id="nivel"><option value="">Todos</option>{% for n in niveis %}<option value="{{ n }}">{{ nomes_nivel[n] }}</option>{% endfor %}</select></label>
+    <label>Host <select id="host"><option value="">Todos</option>{% for h in hosts %}<option>{{ h.nome }}</option>{% endfor %}</select></label>
+  </div>
+  <p class="apoio" id="conta" aria-live="polite">{{ acoes|length|plural("ação", "ações") }} na lista</p>
+  {% for a in acoes %}
+  <details class="acao n-{{ a.nivel }}" data-nivel="{{ a.nivel }}" data-hosts="{{ a.hosts|tojson|forceescape }}">
+    <summary>
+      <span><span class="q {{ a.nivel }}"></span> {{ a.nivel }}</span>
+      <span><b>{{ a.titulo }}</b><br><small>{{ a.hosts|join(", ") }}. {{ a.achados|length|plural("achado", "achados") }}{% if a.kev %}. Exploração confirmada{% endif %}</small></span>
+      <span>{% if a.atrasada %}<span class="atraso">Atrasada</span><br>{% endif %}<small>{% if a.vence %}até {% endif %}{{ a.vence|data }}</small></span>
+    </summary>
+    <div class="corpo">
+      {% if a.solucao %}<p>{{ a.solucao }}</p>{% endif %}
+      {% if a.hosts_esm %}<p class="aviso">Correção só com Ubuntu Pro (ESM) em: {{ a.hosts_esm|join(", ") }}.</p>{% endif %}
+      <div class="rolagem"><table>
+        <thead><tr><th>Achado</th><th>Host</th><th>Estado</th><th>Por que esse nível</th><th>Aberto desde</th></tr></thead>
+        <tbody>
+        {% for x in a.achados %}
+        <tr><td>{{ x.nome }}{% if x.cves %}<br><small>{{ x.cves[:4]|join(", ") }}{% if x.cves|length > 4 %} e mais {{ x.cves|length - 4 }}{% endif %}</small>{% endif %}</td>
+          <td>{{ x.host }}{% if x.portas and not x.pacotes %}<br><small>{{ x.portas|join(", ") }}</small>{% endif %}</td>
+          <td>{{ x.estado }}{% if x.motivo %}<br><small>{{ x.motivo }}</small>{% endif %}</td>
+          <td>{{ x.nivel }}: {{ x.motivos|join("; ") }}</td><td>{{ x.desde|data }}</td></tr>
+        {% endfor %}
+        </tbody></table></div>
+    </div>
+  </details>
+  {% endfor %}
+  {% endif %}
+</section>
+
+<section>
+  <h2>Evolução</h2>
+  <p class="apoio">Achados abertos em cada rodada, sem os que faltam confirmar.</p>
+  {% set ultimos = evolucao[-16:] %}
+  {% set plano = niveis[:4] %}
+  {% set ns = namespace(maior=1) %}
+  {% for e in ultimos %}{% set t = e.P1 + e.P2 + e.P3 + e.P4 %}{% if t > ns.maior %}{% set ns.maior = t %}{% endif %}{% endfor %}
+  <div class="grafico">
+    <ul class="legenda">{% for n in plano %}<li><span class="q {{ n }}"></span>{{ nomes_nivel[n] }}</li>{% endfor %}</ul>
+    <svg width="{{ ultimos|length * 62 }}" height="210" role="img" aria-label="Achados abertos por rodada e nível; os mesmos números estão na tabela abaixo.">
+      <line x1="0" x2="{{ ultimos|length * 62 }}" y1="180.5" y2="180.5"/>
+      {% for e in ultimos %}
+      {% set x = loop.index0 * 62 + 19 %}{% set col = namespace(y=180) %}
+      <g><title>{{ e.data|data }}: {% for n in plano %}{{ n }} {{ e[n] }}{{ ", " if not loop.last }}{% endfor %}</title>
+      {% for n in plano|reverse %}{% if e[n] %}{% set alt = e[n] / ns.maior * 150 %}{% set col.y = col.y - alt %}
+      <rect class="{{ n }}" x="{{ x }}" y="{{ col.y|round(1) }}" width="24" height="{{ [alt - 2, 1]|max|round(1) }}" rx="2"/>{% endif %}{% endfor %}
+      <text class="total" x="{{ x + 12 }}" y="{{ (col.y - 6)|round(1) }}" text-anchor="middle">{{ e.P1 + e.P2 + e.P3 + e.P4 }}</text>
+      <text x="{{ x + 12 }}" y="198" text-anchor="middle">{{ (e.data|data)[:5] }}</text></g>
+      {% endfor %}
+    </svg>
+    <details><summary>Ver em tabela</summary><div class="rolagem"><table>
+      <thead><tr><th>Rodada</th>{% for n in niveis %}<th class="n">{{ n }}</th>{% endfor %}<th class="n">Corrigidos</th></tr></thead>
+      <tbody>{% for e in evolucao|reverse %}<tr><td>{{ e.data|data }}</td>{% for n in niveis %}<td class="n">{{ e[n] }}</td>{% endfor %}<td class="n">{{ e.corrigidos }}</td></tr>{% endfor %}</tbody>
+    </table></div></details>
+  </div>
+</section>
+
+{% if corrigidos %}
+<section>
+  <h2>Corrigidos e confirmados</h2>
+  <p class="apoio">Só entra aqui o que sumiu em uma varredura completa e capaz de ver o achado.</p>
+  <div class="rolagem"><table>
+    <thead><tr><th>Achado</th><th>Host</th><th>Corrigido em</th><th class="n">Dias</th></tr></thead>
+    <tbody>{% for c in corrigidos[:60] %}<tr><td>{{ c.nome }}</td><td>{{ c.host }}</td><td>{{ c.corrigido_em|data }}</td><td class="n">{{ c.dias }}</td></tr>{% endfor %}</tbody>
+  </table></div>
+  {% if corrigidos|length > 60 %}<p class="apoio">Mostrando os 60 mais recentes de {{ corrigidos|length }}. A lista completa está em dados.json.</p>{% endif %}
+</section>
+{% endif %}
+</main>
+<footer>openvas-tratativas {{ versao }}. Este painel descreve falhas do ambiente: compartilhe só com quem precisa.</footer>
+<script>{{ js|safe }}</script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<get_scans_response status="200" status_text="OK"><scan id="exemplo-2099-03-09" target="192.0.2.10,192.0.2.20,198.51.100.5" progress="100" status="finished" start_time="4076719200" end_time="4076724600"><results>
+<result name="HOST_START" type="Log Message" severity="0.0" host="192.0.2.10" hostname="app.example" test_id="" port="" qod="" uri=""></result>
+<result name="Host Details" type="Log Message" severity="0.0" host="192.0.2.10" hostname="app.example" test_id="" port="general/Host_Details" qod="" uri="">&lt;host&gt;&lt;detail&gt;&lt;name&gt;Auth-SSH-Success&lt;/name&gt;&lt;value&gt;Protocol SSH&lt;/value&gt;&lt;/detail&gt;&lt;/host&gt;</result>
+<result name="" type="Alarm" severity="None" host="192.0.2.10" hostname="app.example" test_id="1.3.6.1.4.1.25623.1.9.105" port="package" qod="" uri="">
+Vulnerable package:   libpergaminho6
+Installed version:    libpergaminho6-0.1
+Fixed version:      &gt;=libpergaminho6-6.4-2ex3
+</result>
+<result name="" type="Alarm" severity="None" host="192.0.2.10" hostname="app.example" test_id="1.3.6.1.4.1.25623.1.9.106" port="package" qod="" uri="">
+Vulnerable package:   linux-imagem
+Installed version:    linux-imagem-0.1
+Fixed version:      &gt;=linux-imagem-5.90.0-61
+</result>
+<result name="" type="Alarm" severity="None" host="192.0.2.10" hostname="app.example" test_id="1.3.6.1.4.1.25623.1.9.106" port="package" qod="" uri="">
+Vulnerable package:   linux-modulos
+Installed version:    linux-modulos-0.1
+Fixed version:      &gt;=linux-modulos-5.90.0-61
+</result>
+<result name="Cifras SSH fracas habilitadas" type="Alarm" severity="4.3" host="192.0.2.10" hostname="app.example" test_id="1.3.6.1.4.1.25623.1.9.201" port="22/tcp" qod="80" uri="">Detectado no exemplo.</result>
+<result name="Servidor de shell com versão antiga no banner" type="Alarm" severity="8.1" host="192.0.2.10" hostname="app.example" test_id="1.3.6.1.4.1.25623.1.9.202" port="22/tcp" qod="30" uri="">Detectado no exemplo.</result>
+<result name="HOST_END" type="Log Message" severity="0.0" host="192.0.2.10" hostname="app.example" test_id="" port="" qod="" uri=""></result>
+<result name="HOST_START" type="Log Message" severity="0.0" host="192.0.2.20" hostname="banco.example" test_id="" port="" qod="" uri=""></result>
+<result name="Host Details" type="Log Message" severity="0.0" host="192.0.2.20" hostname="banco.example" test_id="" port="general/Host_Details" qod="" uri="">&lt;host&gt;&lt;detail&gt;&lt;name&gt;Auth-SSH-Success&lt;/name&gt;&lt;value&gt;Protocol SSH&lt;/value&gt;&lt;/detail&gt;&lt;/host&gt;</result>
+<result name="" type="Alarm" severity="None" host="192.0.2.20" hostname="banco.example" test_id="1.3.6.1.4.1.25623.1.9.104" port="package" qod="" uri="">
+Vulnerable package:   quartzo-db-server
+Installed version:    quartzo-db-server-0.1
+Fixed version:      &gt;=quartzo-db-server-14.2-0ex1+esm1
+</result>
+<result name="" type="Alarm" severity="None" host="192.0.2.20" hostname="banco.example" test_id="1.3.6.1.4.1.25623.1.9.105" port="package" qod="" uri="">
+Vulnerable package:   libpergaminho6
+Installed version:    libpergaminho6-0.1
+Fixed version:      &gt;=libpergaminho6-6.4-2ex3
+</result>
+<result name="" type="Alarm" severity="None" host="192.0.2.20" hostname="banco.example" test_id="1.3.6.1.4.1.25623.1.9.106" port="package" qod="" uri="">
+Vulnerable package:   linux-imagem
+Installed version:    linux-imagem-0.1
+Fixed version:      &gt;=linux-imagem-5.90.0-61
+</result>
+<result name="" type="Alarm" severity="None" host="192.0.2.20" hostname="banco.example" test_id="1.3.6.1.4.1.25623.1.9.106" port="package" qod="" uri="">
+Vulnerable package:   linux-modulos
+Installed version:    linux-modulos-0.1
+Fixed version:      &gt;=linux-modulos-5.90.0-61
+</result>
+<result name="" type="Alarm" severity="None" host="192.0.2.20" hostname="banco.example" test_id="1.3.6.1.4.1.25623.1.9.108" port="package" qod="" uri="">
+Vulnerable package:   cofre-utils
+Installed version:    cofre-utils-0.1
+Fixed version:      &gt;=cofre-utils-0.9-3ex2
+</result>
+<result name="Cifras SSH fracas habilitadas" type="Alarm" severity="4.3" host="192.0.2.20" hostname="banco.example" test_id="1.3.6.1.4.1.25623.1.9.201" port="22/tcp" qod="80" uri="">Detectado no exemplo.</result>
+<result name="HOST_END" type="Log Message" severity="0.0" host="192.0.2.20" hostname="banco.example" test_id="" port="" qod="" uri=""></result>
+<result name="HOST_START" type="Log Message" severity="0.0" host="198.51.100.5" hostname="backup.example" test_id="" port="" qod="" uri=""></result>
+<result name="Host Details" type="Log Message" severity="0.0" host="198.51.100.5" hostname="backup.example" test_id="" port="general/Host_Details" qod="" uri="">&lt;host&gt;&lt;detail&gt;&lt;name&gt;Auth-SSH-Success&lt;/name&gt;&lt;value&gt;Protocol SSH&lt;/value&gt;&lt;/detail&gt;&lt;/host&gt;</result>
+<result name="" type="Alarm" severity="None" host="198.51.100.5" hostname="backup.example" test_id="1.3.6.1.4.1.25623.1.9.101" port="package" qod="" uri="">
+Vulnerable package:   libaurora3
+Installed version:    libaurora3-0.1
+Fixed version:      &gt;=libaurora3-3.2-1ex4
+</result>
+<result name="" type="Alarm" severity="None" host="198.51.100.5" hostname="backup.example" test_id="1.3.6.1.4.1.25623.1.9.101" port="package" qod="" uri="">
+Vulnerable package:   libaurora-dev
+Installed version:    libaurora-dev-0.1
+Fixed version:      &gt;=libaurora-dev-3.2-1ex4
+</result>
+<result name="" type="Alarm" severity="None" host="198.51.100.5" hostname="backup.example" test_id="1.3.6.1.4.1.25623.1.9.105" port="package" qod="" uri="">
+Vulnerable package:   libpergaminho6
+Installed version:    libpergaminho6-0.1
+Fixed version:      &gt;=libpergaminho6-6.4-2ex3
+</result>
+<result name="" type="Alarm" severity="None" host="198.51.100.5" hostname="backup.example" test_id="1.3.6.1.4.1.25623.1.9.107" port="package" qod="" uri="">
+Vulnerable package:   vetorgif
+Installed version:    vetorgif-0.1
+Fixed version:      &gt;=vetorgif-2.0-9ex1
+</result>
+<result name="Cifras SSH fracas habilitadas" type="Alarm" severity="4.3" host="198.51.100.5" hostname="backup.example" test_id="1.3.6.1.4.1.25623.1.9.201" port="22/tcp" qod="80" uri="">Detectado no exemplo.</result>
+<result name="HOST_END" type="Log Message" severity="0.0" host="198.51.100.5" hostname="backup.example" test_id="" port="" qod="" uri=""></result>
+</results></scan></get_scans_response>

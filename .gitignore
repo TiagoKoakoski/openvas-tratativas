@@ -1,0 +1,16 @@
+__pycache__/
+*.egg-info/
+.venv/
+.pytest_cache/
+.ruff_cache/
+.coverage
+dist/
+build/
+saida/
+inteligencia/
+# Relatório de scanner é dado sensível: nada de XML fora do exemplo fictício.
+*.xml
+*.notus
+!exemplo/rodadas/*.xml
+!exemplo/avisos/*.notus
+!exemplo/inteligencia/

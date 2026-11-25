@@ -1,0 +1,18 @@
+titulo = "Servidores da Loja Exemplo"
+fuso = "America/Sao_Paulo"
+
+# Detecção com confiança (QoD) menor que isto vai para "A confirmar". O Greenbone usa 70.
+qod_minimo = 70
+
+# Dias para corrigir, contados de quando o achado apareceu (ou voltou).
+[prazos]
+P1 = 3
+P2 = 15
+P3 = 30
+P4 = 90
+
+[hosts]
+"192.0.2.10" = "app"
+"192.0.2.20" = "banco"
+"198.51.100.5" = "backup"
+"203.0.113.7" = "loja (site)"

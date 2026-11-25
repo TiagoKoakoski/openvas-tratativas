@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  testes:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.12", "3.13", "3.14"]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@1db35dd8eee11c5894872e0b383ae6c406cf738d # v10.4.0
+      - run: uv sync --locked --python ${{ matrix.python }}
+      - run: uv run --locked ruff check .
+      - run: uv run --locked ruff format --check .
+      - run: uv run --locked pytest --cov=tratativas --cov-branch --cov-report=term-missing --cov-fail-under=90
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - run: docker build -t openvas-tratativas .
+      - name: Gera o exemplo sem rede, sem privilégio e com disco somente leitura
+        run: |
+          mkdir saida-docker
+          docker run --rm --network none --read-only --cap-drop ALL --user "$(id -u):$(id -g)" \
+            -v "$PWD/exemplo:/dados:ro" -v "$PWD/saida-docker:/saida" openvas-tratativas \
+            /dados/rodadas --avisos /dados/avisos --inteligencia /dados/inteligencia \
+            --config /dados/config.toml --hoje 2099-03-18 --saida /saida
+          grep -q "11 achados abertos" saida-docker/painel.html
+          test "$(ls saida-docker | wc -l)" = 4

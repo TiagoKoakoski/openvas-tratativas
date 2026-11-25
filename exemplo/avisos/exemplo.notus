@@ -1,0 +1,93 @@
+{
+ "advisories": [
+  {
+   "oid": "1.3.6.1.4.1.25623.1.9.101",
+   "title": "Exemplo Linux: libaurora (EX-2099-01)",
+   "cves": [
+    "CVE-2099-1001"
+   ],
+   "severity": {
+    "cvss_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+   },
+   "cisa_kev": false
+  },
+  {
+   "oid": "1.3.6.1.4.1.25623.1.9.102",
+   "title": "Exemplo Linux: libaurora (EX-2099-07)",
+   "cves": [
+    "CVE-2099-1002"
+   ],
+   "severity": {
+    "cvss_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N"
+   },
+   "cisa_kev": false
+  },
+  {
+   "oid": "1.3.6.1.4.1.25623.1.9.103",
+   "title": "Exemplo Linux: nimbusd (EX-2099-02)",
+   "cves": [
+    "CVE-2099-1003"
+   ],
+   "severity": {
+    "cvss_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+   },
+   "cisa_kev": false
+  },
+  {
+   "oid": "1.3.6.1.4.1.25623.1.9.104",
+   "title": "Exemplo Linux: quartzo-db (EX-2099-03)",
+   "cves": [
+    "CVE-2099-1004"
+   ],
+   "severity": {
+    "cvss_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N"
+   },
+   "cisa_kev": false
+  },
+  {
+   "oid": "1.3.6.1.4.1.25623.1.9.105",
+   "title": "Exemplo Linux: libpergaminho (EX-2099-04)",
+   "cves": [
+    "CVE-2099-1005"
+   ],
+   "severity": {
+    "cvss_v3": "CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:U/C:H/I:L/A:L"
+   },
+   "cisa_kev": false
+  },
+  {
+   "oid": "1.3.6.1.4.1.25623.1.9.106",
+   "title": "Exemplo Linux: kernel (EX-2099-05)",
+   "cves": [
+    "CVE-2099-1006",
+    "CVE-2099-1007"
+   ],
+   "severity": {
+    "cvss_v3": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H"
+   },
+   "cisa_kev": false
+  },
+  {
+   "oid": "1.3.6.1.4.1.25623.1.9.107",
+   "title": "Exemplo Linux: vetorgif (EX-2099-06)",
+   "cves": [
+    "CVE-2099-1008"
+   ],
+   "severity": {
+    "cvss_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:L/I:N/A:L"
+   },
+   "cisa_kev": false
+  },
+  {
+   "oid": "1.3.6.1.4.1.25623.1.9.108",
+   "title": "Exemplo Linux: cofre-utils (EX-2099-08)",
+   "cves": [
+    "CVE-2099-1009"
+   ],
+   "severity": {
+    "cvss_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+   },
+   "cisa_kev": false
+  }
+ ]
+}
