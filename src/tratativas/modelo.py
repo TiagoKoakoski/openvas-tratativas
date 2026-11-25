@@ -14,7 +14,7 @@ class Pacote:
     @property
     def esm(self) -> bool:
         """A versão corrigida só existe no Ubuntu Pro (ESM)."""
-        return re.search(r"[+~]esm\d", self.corrigida) is not None
+        return re.search(r"esm\d+(\.\d+)*$", self.corrigida) is not None
 
 
 @dataclass
