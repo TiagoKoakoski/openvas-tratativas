@@ -1,5 +1,6 @@
 """Estruturas compartilhadas: o que uma varredura viu em um host."""
 
+import re
 from dataclasses import dataclass, field
 from datetime import datetime
 
@@ -13,7 +14,7 @@ class Pacote:
     @property
     def esm(self) -> bool:
         """A versão corrigida só existe no Ubuntu Pro (ESM)."""
-        return "esm" in self.corrigida.lower()
+        return re.search(r"[+~]esm\d", self.corrigida) is not None
 
 
 @dataclass
